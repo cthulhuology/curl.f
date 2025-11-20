@@ -8,11 +8,33 @@ PRIVATE
 
 PUBLIC
 
-FUNCTION: curl_easy_init ( -- a )
-FUNCTION: curl_easy_setopt ( a i *a -- i )
-FUNCTION: curl_easy_perform ( a -- i )
+FUNCTION: curl_global_init ( i -- e )
+FUNCTION: curl_easy_init ( -- h )
+FUNCTION: curl_easy_setopt ( h i *a -- e )
+FUNCTION: curl_easy_perform ( h -- e )
+FUNCTION: curl_easy_getinfo ( h i ? -- e )
+FUNCTION: curl_easy_reset ( h -- )
+FUNCTION: curl_easy_cleanup ( h -- )
+FUNCTION: curl_easy_escape ( h s n -- a )
+FUNCTION: curl_easy_unescape ( h s n *i -- a )
+FUNCTION: curl_easy_duphandle ( h1 -- h2 )
+FUNCTION: curl_easy_header ( h s i i i *a -- e )
+FUNCTION: curl_easy_nextheader ( h i i *p -- a )
+FUNCTION: curl_easy_pause ( h i -- e )
+FUNCTION: curl_easy_upkeep ( h -- e )
+FUNCTION: curl_easy_recv ( h a n *n -- e )
+FUNCTION: curl_easy_send ( h a n *n -- e )
+FUNCTION: curl_easy_option_by_id ( i -- a )
+FUNCTION: curl_easy_option_by_name ( s -- a )
+FUNCTION: curl_easy_option_next ( p -- a )
+FUNCTION: curl_easy_strerror ( e -- s )
+FUNCTION: curl_easy_ssls_export ( h cb p -- e )
+FUNCTION: curl_easy_ssls_import ( h s a1 n1 a2 n2 -- e )
 
 : CURLOPT header postpone (constant) + , ;   \ # type CURLOPT
+
+1 CONSTANT CURL_GLOBAL_ALL	\ 3 if WIN32
+0 CONSTANT CURLE_OK
 
     0 CONSTANT CURLOPTTYPE_LONG
 10000 CONSTANT CURLOPTTYPE_OBJECTPOINT   
@@ -318,3 +340,4 @@ CURLOPTTYPE_LONG CONSTANT CURLOPTTYPE_VALUES
  323 	 CURLOPTTYPE_STRINGPOINT	CURLOPT	CURLOPT_HAPROXY_CLIENT_IP
  324 	 CURLOPTTYPE_LONG		CURLOPT	CURLOPT_SERVER_RESPONSE_TIMEOUT_MS
 
+END-PACKAGE
