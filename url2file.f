@@ -28,7 +28,6 @@ include curl
 	fd close-file 
 	bye ;
 
-' main 'main !
-
+starter main
 program download
 bye	
