@@ -1,4 +1,3 @@
-
 include curl
 
 : (write-callback) ( a i i a -- i )
