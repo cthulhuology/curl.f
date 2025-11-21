@@ -14,20 +14,57 @@ pad r> r> + ;
 
 : eol over + 0 swap c! ;
 
-create home-cache 1024 allot home-cache 1024 0 fill
-$HOME zcount home-cache zplace s" /.forth/" home-cache zappend
+1024 buffer: home-cache
+home-cache 1024 0 fill
+
+: init-cache-dir
+	$HOME zcount home-cache zplace s" /.forth/" home-cache zappend
+	home-cache is-dir not if  s" mkdir -p ~/.forth" system then ;
+init-cache-dir
+
 
 : (github-raw) ( file repo user ) 
-	s" https://raw.githubusercontent.com/" ( user ) >>
+	s" https://raw.githubusercontent.com/" ( user ) zcount >>
 	s" /" s+
-	( repo ) >> 
+	( repo ) zcount >> 
 	s" /refs/heads/master/" s+
-	( file ) >> eol ;
+	( file ) zcount >> eol ;
+
+
+0 value (github-path-segments)
+
+: (github-path) ( "user/repo" | "user/repo/file" -- zfile zrepo zuser )
+	0 to (github-path-segments)
+	bl word count 
+	cr 2dup type cr
+	dup >r pad swap move 0 r@ pad + c!
+	pad zcount type cr
+	pad r> +
+	begin dup pad > while
+		.s cr
+		dup zcount type cr
+		dup 1- c@ [char] / = if
+			dup 1- 0 over c! 		\ null the path segment
+			1 +to (github-path-segments)	\ add a segment
+		else 
+			1- dup zcount type cr
+		then
+	.s cr
+	repeat
+	
+	(github-path-segments) 2 < if
+		dup
+	then pad .s ;
+	
 
 PUBLIC
 
-: test s" curl.f" s" curl.f" s" cthulhuology" (github-raw) zcount type cr ;
+: test1 z" curl.f" z" curl.f" z" cthulhuology" (github-raw) zcount type cr ;
 
-: gitub bl word count 
+: github (github-path) (github-raw) zcount type cr ;
+
+.s c
+
+github cthulhuology/curl.f/curl.f 
 
 END-PACKAGE
