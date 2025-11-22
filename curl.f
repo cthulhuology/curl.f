@@ -1,7 +1,7 @@
 
 PACKAGE curl
 
-XLIBRARY libcurl.so libcurl.dylib libcurl.dll
+LIBRARY libcurl.so
 
 PRIVATE
 

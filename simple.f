@@ -1,4 +1,4 @@
-include curl.f
+include curl
 
 0 value client
 

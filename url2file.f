@@ -19,13 +19,14 @@ include curl
 	client curl_easy_cleanup ;	
 
 : main 
+	argc 2 < if 
+		." usage: download url [filename]"  cr bye then
 	argc 2 > if 
 		." writing to " 2 argv type cr
 		2 argv r/w create-file throw to fd
 	then
 	1 argv drop download 
-	fd close-file 
-	bye ;
+	fd close-file ;
 
 starter main
 program download
